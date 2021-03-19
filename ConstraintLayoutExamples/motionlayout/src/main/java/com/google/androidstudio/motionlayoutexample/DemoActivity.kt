@@ -69,7 +69,7 @@ class DemoActivity : AppCompatActivity() {
 
   override fun onDestroy() {
     super.onDestroy()
-    modeViewModel.currentConstraintId.value = R.id.base_state
+//    modeViewModel.currentConstraintId.value = R.id.base_state
   }
 
   fun changeState(v: View?) {
