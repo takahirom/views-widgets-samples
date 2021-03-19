@@ -18,6 +18,7 @@ package com.google.androidstudio.motionlayoutexample
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -43,9 +44,26 @@ class DemoActivity : AppCompatActivity() {
     findViewById<View>(R.id.arrow_right).setOnClickListener {
       modeViewModel.currentConstraintId.value = R.id.half_people
     }
-    modeViewModel.currentConstraintId.observe(this){
+    findViewById<View>(R.id.people8).setOnClickListener {
+      modeViewModel.currentConstraintId.value = R.id.people
+    }
+    modeViewModel.currentConstraintId.observe(this) {
       container.transitionToState(it)
-      container.transitionToEnd()
+      Log.d("",
+          "Motion:" +
+              "constraintSetName:" + resources.getResourceEntryName(it) +
+              "start:${resources.getResourceEntryName(container.startState)}" +
+              "end:${resources.getResourceEntryName(container.endState)}"
+      )
+      if (container.endState == it) {
+        println("end")
+        container.transitionToEnd()
+        container.progress = 1.0F
+      } else if (container.startState == it) {
+        println("start")
+        container.transitionToStart()
+        container.progress = 0.0F
+      }
     }
 
     val debugMode = if (intent.getBooleanExtra("showPaths", false)) {
