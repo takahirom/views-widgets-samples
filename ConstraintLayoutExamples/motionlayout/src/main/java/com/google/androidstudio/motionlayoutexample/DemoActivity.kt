@@ -55,15 +55,7 @@ class DemoActivity : AppCompatActivity() {
               "start:${resources.getResourceEntryName(container.startState)}" +
               "end:${resources.getResourceEntryName(container.endState)}"
       )
-      if (container.endState == it) {
-        println("end")
-        container.transitionToEnd()
-        container.progress = 1.0F
-      } else if (container.startState == it) {
-        println("start")
-        container.transitionToStart()
-        container.progress = 0.0F
-      }
+      container.setTransitionDuration(0)
     }
   }
 
