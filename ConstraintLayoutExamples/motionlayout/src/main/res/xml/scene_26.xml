@@ -27,8 +27,8 @@
     </Transition>
 
     <Transition
-        motion:constraintSetStart="@id/base_state"
-        motion:constraintSetEnd="@id/half_people"
+        motion:constraintSetEnd="@id/base_state"
+        motion:constraintSetStart="@id/half_people"
         motion:duration="3000">
         <OnSwipe
             motion:dragDirection="dragRight"
@@ -37,8 +37,8 @@
     </Transition>
 
     <Transition
-        motion:constraintSetStart="@id/half_people"
-        motion:constraintSetEnd="@id/people"
+        motion:constraintSetEnd="@id/half_people"
+        motion:constraintSetStart="@id/people"
         motion:duration="3000">
         <OnSwipe
             motion:dragDirection="dragRight"

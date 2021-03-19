@@ -65,13 +65,11 @@ class DemoActivity : AppCompatActivity() {
         container.progress = 0.0F
       }
     }
+  }
 
-    val debugMode = if (intent.getBooleanExtra("showPaths", false)) {
-      MotionLayout.DEBUG_SHOW_PATH
-    } else {
-      MotionLayout.DEBUG_SHOW_NONE
-    }
-    (container as? MotionLayout)?.setDebugMode(debugMode)
+  override fun onDestroy() {
+    super.onDestroy()
+    modeViewModel.currentConstraintId.value = R.id.base_state
   }
 
   fun changeState(v: View?) {
