@@ -19,41 +19,48 @@ package com.google.androidstudio.motionlayoutexample
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+
+class ModeViewModel() : ViewModel() {
+  var currentConstraintId = MutableLiveData<Int>()
+}
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP) // for View#clipToOutline
 class DemoActivity : AppCompatActivity() {
+  val modeViewModel by viewModels<ModeViewModel>()
 
-    private lateinit var container: View
+  private lateinit var container: MotionLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val layout = intent.getIntExtra("layout_file_id", R.layout.motion_01_basic)
-        setContentView(layout)
-        container = findViewById(R.id.motionLayout)
-
-        if (layout == R.layout.motion_11_coordinatorlayout) {
-            val icon = findViewById<ImageView>(R.id.icon)
-            icon?.clipToOutline = true
-        }
-
-        val debugMode = if (intent.getBooleanExtra("showPaths", false)) {
-            MotionLayout.DEBUG_SHOW_PATH
-        } else {
-            MotionLayout.DEBUG_SHOW_NONE
-        }
-        (container as? MotionLayout)?.setDebugMode(debugMode)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.motion_26_multistate)
+    container = findViewById(R.id.motionLayout)
+    findViewById<View>(R.id.arrow_right).setOnClickListener {
+      modeViewModel.currentConstraintId.value = R.id.half_people
+    }
+    modeViewModel.currentConstraintId.observe(this){
+      container.transitionToState(it)
     }
 
-    fun changeState(v: View?) {
-        val motionLayout = container as? MotionLayout ?: return
-        if (motionLayout.progress > 0.5f) {
-            motionLayout.transitionToStart()
-        } else {
-            motionLayout.transitionToEnd()
-        }
+    val debugMode = if (intent.getBooleanExtra("showPaths", false)) {
+      MotionLayout.DEBUG_SHOW_PATH
+    } else {
+      MotionLayout.DEBUG_SHOW_NONE
     }
+    (container as? MotionLayout)?.setDebugMode(debugMode)
+  }
+
+  fun changeState(v: View?) {
+    val motionLayout = container as? MotionLayout ?: return
+    if (motionLayout.progress > 0.5f) {
+      motionLayout.transitionToStart()
+    } else {
+      motionLayout.transitionToEnd()
+    }
+  }
 }
