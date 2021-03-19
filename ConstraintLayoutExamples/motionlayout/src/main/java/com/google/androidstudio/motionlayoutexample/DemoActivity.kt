@@ -45,6 +45,7 @@ class DemoActivity : AppCompatActivity() {
     }
     modeViewModel.currentConstraintId.observe(this){
       container.transitionToState(it)
+      container.transitionToEnd()
     }
 
     val debugMode = if (intent.getBooleanExtra("showPaths", false)) {
