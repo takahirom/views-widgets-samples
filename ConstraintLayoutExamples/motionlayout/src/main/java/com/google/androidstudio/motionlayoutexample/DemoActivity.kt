@@ -28,7 +28,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class ModeViewModel() : ViewModel() {
-  var currentConstraintId = MutableLiveData<Int>()
+  var currentConstraintId = MutableLiveData<Int>(R.id.base_state)
 }
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP) // for View#clipToOutline
@@ -47,6 +47,9 @@ class DemoActivity : AppCompatActivity() {
     findViewById<View>(R.id.people8).setOnClickListener {
       modeViewModel.currentConstraintId.value = R.id.people
     }
+    container.setTransitionDuration(0)
+    container.transitionToState(modeViewModel.currentConstraintId
+        .value!!)
     modeViewModel.currentConstraintId.observe(this) {
       container.transitionToState(it)
       Log.d("",
@@ -55,7 +58,6 @@ class DemoActivity : AppCompatActivity() {
               "start:${resources.getResourceEntryName(container.startState)}" +
               "end:${resources.getResourceEntryName(container.endState)}"
       )
-      container.setTransitionDuration(0)
     }
   }
 
